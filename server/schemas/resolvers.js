@@ -6,8 +6,13 @@ const { User, Book } = require("../models")
 
 const resolvers = {
     Query: {
+        // Get all users
         users: async () => {
             return User.find();
+        },
+        // Get a single user
+        user: async (parent, {_id}) => {
+            return User.findOne({ _id })
         }
     }
 }
