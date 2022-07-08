@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
 const PORT = process.env.PORT || 3001;
-
+const  { authMiddleware } = require('./utils/auth');
 // Import ApolloServer
 const {ApolloServer}  = require('apollo-server-express');
 // Import typeDefs and Resolvers
@@ -11,7 +11,10 @@ const {typeDefs, resolvers} = require('./schemas');
 // Letting Apollo server know what the typeDef and resolvers look like.
  const server = new ApolloServer({
    typeDefs,
-   resolvers
+   resolvers,
+   //Get headers from incoming request. Use as context in resolvers.
+   // Middleware will take care of validating the token.
+   context: authMiddleware
  });
 
 const app = express();

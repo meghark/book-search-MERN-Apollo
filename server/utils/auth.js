@@ -11,17 +11,17 @@ module.exports = {// This function takes a user object as input will send the as
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
   // function for our authenticated routes
-  authMiddleware: function (req, res, next) {
-    // allows token to be sent via  req.query or headers
-    let token = req.query.token || req.headers.authorization;
+  authMiddleware: function (req) {
+    // allows token to be sent via  req.query or headers or req.body
+    let token = req.body.token || req.query.token || req.headers.authorization;
 
     // ["Bearer", "<tokenvalue>"]
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-
+    // Return request object if token is missing.
     if (!token) {
-      return res.status(400).json({ message: 'You have no token!' });
+      return req;
     }
 
     // verify token and get user data out of it
@@ -30,11 +30,11 @@ module.exports = {// This function takes a user object as input will send the as
       req.user = data;
     } catch {
       console.log('Invalid token');
-      return res.status(400).json({ message: 'invalid token!' });
+      
     }
 
     // send to next endpoint
-    next();
+    return req;
   }
   
 };
