@@ -1,16 +1,25 @@
 import { gql } from '@apollo/client';
 
-// export query for singleuser.
-export const QUERY_SINGLEUSER = gql`
-    query User($id: ID!) {
-        user(_id: $id) {
-        _id
-        username
-        email
-        password,
-        savedBooks {
-            authors,
-            bookId
+export const LOGIN_USER = gql`
+    mutation Login($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+        token
+        user{
+            _id,
+            username
+          } 
+        }
+    }
+  
+`;
+
+export const ADD_USER = gql `
+    mutation CreateUser($username: String!, $email: String!, $password: String!) {
+        createUser(username: $username, email: $email, password: $password) {
+        token
+        user{
+            _id
+            username
         }
       }
     }

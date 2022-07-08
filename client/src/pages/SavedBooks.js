@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+// useQuery hook to make requests to graphQl server.
+import { useQuery } from '@apollo/client';
 
-import { getMe, deleteBook } from '../utils/API';
+// Import query me
+import { QUERY_ME } from '../utils/queries';
+//import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 

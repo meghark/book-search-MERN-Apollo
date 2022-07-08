@@ -26,7 +26,10 @@ const resolvers = {
         },
         // Get a single user
         user: async (parent, {_id}) => {
-            return User.findOne({ _id })
+            const userData = await User.findOne({ _id: context.user._id })
+                .select('-__v -password')
+                .populate('savedBooks');
+            return userData;
         }
     },
 
