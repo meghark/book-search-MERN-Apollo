@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
-const routes = require('./routes');
-
 const PORT = process.env.PORT || 3001;
 
 // Import ApolloServer
@@ -10,6 +8,7 @@ const {ApolloServer}  = require('apollo-server-express');
 // Import typeDefs and Resolvers
 const {typeDefs, resolvers} = require('./schemas');
 // Use the typeDefs and resolvers to create a new schema
+// Letting Apollo server know what the typeDef and resolvers look like.
  const server = new ApolloServer({
    typeDefs,
    resolvers
@@ -20,11 +19,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // create a new instance of the apollo server with the defined schema.
+// Connect Apollo server to express js server
+// Creates a special /graphql end point from which API can be accessed.
+// Will also launch a testing tool.
 const startApolloServer = async (typeDefs, resolvers) => {
 await server.start();
 
-  //Integrate server with express application
-server.applyMiddleware({ app });
+  // Integrate server with express application.r
+  server.applyMiddleware({ app });
+
+  if (process.env.NODE_ENV === 'production') {
+    //app.use(express.static(path.join(__dirname, '../client/build')));
+  }
 
     db.once('open', () => {
       app.listen(PORT, () => {
@@ -40,9 +46,7 @@ server.applyMiddleware({ app });
 startApolloServer(typeDefs, resolvers);
 
 // if we're in production, serve client/build as static assets
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-}
 
-app.use(routes);
+
+//app.use(routes);
 
