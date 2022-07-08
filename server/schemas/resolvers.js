@@ -4,6 +4,7 @@
 
 const { User, Book } = require("../models")
 const { AuthenticationError} = require("apollo-server-express");
+const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
@@ -22,8 +23,10 @@ const resolvers = {
         // Add a new user.
         createUser: async(parent , args) => {
             const user = await User.create(args);
-
-            return user;
+           
+            //Sign a token and return an object with token and user's data.
+            const token = signToken(user);
+            return { token, user};
         },
         // Login resolver. First check to see if user exists.
         // Second check for valid password.
@@ -42,7 +45,9 @@ const resolvers = {
                 throw new AuthenticationError('Incorrect credentails')
             };
 
-            return user;
+            const token =  signToken(user);
+
+            return { token, user} ;
         }
     }
 }

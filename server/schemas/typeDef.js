@@ -20,6 +20,11 @@ const typeDefs = gql `
             link: String
             title: String
         }
+        
+        type Auth {
+            token: ID!
+            user: User
+          }
 
         type Query {
             users: [User]
@@ -27,8 +32,8 @@ const typeDefs = gql `
         }
 
         type Mutation{
-            login(email: String!, password: String!): User
-            createUser(username: String!, email: String!, password: String!): User
+            login(email: String!, password: String!): Auth
+            createUser(username: String!, email: String!, password: String!): Auth
         }
 
 `;
