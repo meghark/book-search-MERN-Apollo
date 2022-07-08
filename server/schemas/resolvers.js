@@ -36,7 +36,7 @@ const resolvers = {
     Mutation: {
 
         // Add a new user.
-        createUser: async(parent , args) => {
+        addUser: async(parent , args) => {
             const user = await User.create(args);
            
             //Sign a token and return an object with token and user's data.
@@ -78,7 +78,7 @@ const resolvers = {
           
             throw new AuthenticationError('You need to be logged in!');
           },
-          deleteBook: async (parent, { userId, bookId }, context) => {
+          removeBook: async (parent, { userId, bookId }, context) => {
             if (context.user) {
               const updateUser = await User.findOneAndUpdate(
                 { _id: userId },

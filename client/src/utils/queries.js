@@ -17,7 +17,7 @@ export const QUERY_SINGLEUSER = gql`
 `;
 
 // export query for singleuser.
-export const QUERY_ME = gql`
+export const GET_ME = gql`
   {
         me {
         _id
