@@ -9,7 +9,17 @@ import Navbar from './components/Navbar';
 // InMemoryCache caches API response data to perform requests.
 // createHttpLink control Apollo client requests. Kind of like middleware for outbound network requests.
 import { ApolloProvider, ApolloClient, InMemoryCache,  createHttpLink} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 // Connect to back-end server /graphql.
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -17,7 +27,7 @@ const httpLink = createHttpLink({
 
 // Create connection to API end point via above link.
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
