@@ -20,12 +20,14 @@ const resolvers = {
           
             throw new AuthenticationError('Not logged in');
         },
-        // Get all users
+        // Get all users.
+        // Not used currently in the application for future use.
         users: async () => {
             return User.find();
         },
-        // Get a single user
-        user: async (parent, {_id}) => {
+        // Not used currently in the application for future use.
+
+        user: async (parent, args, context) => {
             const userData = await User.findOne({ _id: context.user._id })
                 .select('-__v -password')
                 .populate('savedBooks');

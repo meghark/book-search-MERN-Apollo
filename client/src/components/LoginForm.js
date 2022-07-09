@@ -1,16 +1,21 @@
-// see SignupForm.js for comments
+// Login page
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
+// Import useMutation hook and LOGIN_USER mutation.
+// This will be used to connect to the graphQl API running on server.
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
+
+  // Use the form state to reset the credentials on the page.
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
+  // Create login function using the mutation
   const [login] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
@@ -29,17 +34,20 @@ const LoginForm = () => {
     }
 
     try {
-      console.log("Now here");
+      
+      // Call login graphql API by passing the credential users provided on the form.
       const { data } = await login({
         variables: { ...userFormData}
       })
     
+      // Set token in storage for further calls.
       Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
 
+    // Reset form.
     setUserFormData({
       username: '',
       email: '',
@@ -50,6 +58,7 @@ const LoginForm = () => {
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+        {/* Alert user if login fails */}
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
         </Alert>

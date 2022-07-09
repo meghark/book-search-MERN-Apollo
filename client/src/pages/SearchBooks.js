@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
-import { SAVE_BOOK  } from '../utils/mutations';
+// Import mutation  hook
 import { useMutation } from '@apollo/client';
+// Import save book mutation.
+import { SAVE_BOOK  } from '../utils/mutations';
+
 import Auth from '../utils/auth';
 import {searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
+  // Create a savedBook function using the SAVE_BOOK mutation
   const [savedBook] = useMutation(SAVE_BOOK);
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -68,17 +72,13 @@ const SearchBooks = () => {
     }
 
     try {
-    
-
-       const data = await savedBook({
+       // Call saveBook graphQl api to save the selected book to user record.
+       await savedBook({
             variables: {
-              
-               input:bookToSave
-             
-            }
-        
+                input:bookToSave
+              }
       })
-      console.log(data);      
+      
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
@@ -121,6 +121,7 @@ const SearchBooks = () => {
         </h2>
         <CardColumns>
           {searchedBooks.map((book) => {
+            {/* Save Book button is only displayed if user is logged in. Also for already saved books the button says that its already available */}
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? (

@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
-module.exports = {// This function takes a user object as input will send the as token.
+module.exports = {
+  // This function takes a user object as input will send the as token.
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
 
@@ -13,8 +14,7 @@ module.exports = {// This function takes a user object as input will send the as
   // function for our authenticated routes
   authMiddleware: function ({ req }) {
     // allows token to be sent via  req.query or headers or req.body
-
-    let token =  req.body.token  || req.query.token || req.headers.authorization ;
+let token =  req.body.token  || req.query.token || req.headers.authorization ;
 
     if(req.headers.authorization){
       token = token
