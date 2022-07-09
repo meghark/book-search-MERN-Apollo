@@ -42,6 +42,7 @@ const AppNavbar = () => {
       <Modal
         size='lg'
         show={showModal}
+        animation={false}
         onHide={() => setShowModal(false)}
         aria-labelledby='signup-modal'>
         {/* tab container to do either signup or login component */}

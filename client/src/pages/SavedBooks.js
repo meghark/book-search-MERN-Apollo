@@ -64,7 +64,6 @@ const SavedBooks = () => {
         </h2>
         <CardColumns>
           {userData.savedBooks.map((book) => {
-            {/* Display saved books in cards. Provide a delete button to remove book from savedBooks list. */}
             return (
               
               <Card key={book.bookId} border='dark'>

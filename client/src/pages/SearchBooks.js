@@ -121,7 +121,6 @@ const SearchBooks = () => {
         </h2>
         <CardColumns>
           {searchedBooks.map((book) => {
-            {/* Save Book button is only displayed if user is logged in. Also for already saved books the button says that its already available */}
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? (
