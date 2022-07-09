@@ -10,6 +10,10 @@ import Navbar from './components/Navbar';
 // createHttpLink control Apollo client requests. Kind of like middleware for outbound network requests.
 import { ApolloProvider, ApolloClient, InMemoryCache,  createHttpLink} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+// Connect to back-end server /graphql.
+const httpLink = createHttpLink({
+  uri: '/graphql',
+});
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -20,10 +24,7 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-// Connect to back-end server /graphql.
-const httpLink = createHttpLink({
-  uri: '/graphql',
-});
+
 
 // Create connection to API end point via above link.
 const client = new ApolloClient({

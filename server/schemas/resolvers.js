@@ -47,6 +47,7 @@ const resolvers = {
         // Second check for valid password.
         // Authentication errors thrown will be caught by graphQl and send to client.
         login: async(parent, {email, password}) => {
+          
             const user = await User.findOne({ email });
 
             if(!user){
