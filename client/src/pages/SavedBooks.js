@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+// Import query me
+import { GET_ME } from '../utils/queries';
+// Import query me
+import { REMOVE_BOOK  } from '../utils/mutations';
 // useQuery hook to make requests to graphQl server.
 import { useMutation, useQuery } from '@apollo/client';
 
-// Import query me
-import { QUERY_ME } from '../utils/queries';
-
-// Import query me
-import { REMOVE_BOOK  } from '../utils/mutations';
-//import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   
     // use object destructuring to extract `data` from the `useQuery` Hook's response and rename it `userData` to be more descriptive
-    const { data: userData } = useQuery(QUERY_ME);
-    // If data exists store in thoughts else empty array
-    
+    const { loading, data: userData } = useQuery(GET_ME);
+    //const [userData, setUserData] = useState([]);
+
+    const [removeBook, ] = useMutation(REMOVE_BOOK);
     const loggedIn = Auth.loggedIn();
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
     const handleDeleteBook = async (bookId) => {
-      const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+    
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -34,7 +33,7 @@ const SavedBooks = () => {
       })
 
       const updatedUser = data.removeBook.user;
-      //setUserData(updatedUser);
+      setUserData(updatedUser);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {

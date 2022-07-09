@@ -1,25 +1,30 @@
 const express = require('express');
 const path = require('path');
-const db = require('./config/connection');
-const PORT = process.env.PORT || 3001;
-const  { authMiddleware } = require('./utils/auth');
+
 // Import ApolloServer
 const {ApolloServer}  = require('apollo-server-express');
 // Import typeDefs and Resolvers
 const {typeDefs, resolvers} = require('./schemas');
+const  { authMiddleware } = require('./utils/auth');
+const db = require('./config/connection');
+const PORT = process.env.PORT || 3001;
+
 // Use the typeDefs and resolvers to create a new schema
 // Letting Apollo server know what the typeDef and resolvers look like.
  const server = new ApolloServer({
    typeDefs,
    resolvers,
-   //Get headers from incoming request. Use as context in resolvers.
-   // Middleware will take care of validating the token.
-   context: authMiddleware
+   context: authMiddleware,
  });
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+ // if we're in production, serve client/build as static assets
+ if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/build')));
+}
 
 // create a new instance of the apollo server with the defined schema.
 // Connect Apollo server to express js server
@@ -31,11 +36,7 @@ await server.start();
   // Integrate server with express application.r
   server.applyMiddleware({ app });
 
-  // if we're in production, serve client/build as static assets
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/build')));
-  }
-
+ 
     db.once('open', () => {
       app.listen(PORT, () => {
             console.log(`🌍 Now listening on localhost:${PORT}`)
