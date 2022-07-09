@@ -34,7 +34,7 @@ const resolvers = {
     },
 
     Mutation: {
-
+     
         // Add a new user.
         addUser: async(parent , args) => {
             const user = await User.create(args);
@@ -43,11 +43,12 @@ const resolvers = {
             const token = signToken(user);
             return { token, user};
         },
-        // Login resolver. First check to see if user exists.
-        // Second check for valid password.
-        // Authentication errors thrown will be caught by graphQl and send to client.
+       
         login: async(parent, {email, password}) => {
-          
+     
+           // Login resolver. First check to see if user exists.
+          // Second check for valid password.
+          // Authentication errors thrown will be caught by graphQl and send to client.
             const user = await User.findOne({ email });
 
             if(!user){
@@ -65,21 +66,23 @@ const resolvers = {
 
             return { token, user} ;
         },
-        saveBook: async (parent, { bookBody }, context) => {
-            if (context.user) {
-              const updateUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
-                { $addToSet: { savedBooks: { bookBody//, username: context.user.username 
-                } } },
-                { new: true, runValidators: true }
-              );
-          
-              return updateUser;
-            }
-          
-            throw new AuthenticationError('You need to be logged in!');
-          },
-          removeBook: async (parent, { userId, bookId }, context) => {
+
+        saveBook: async(parent, {input} , context) => {
+       
+           if (context.user) {
+             const updateUser = await User.findOneAndUpdate(
+               { _id: context.user._id },
+               { $addToSet: { savedBooks: input } },
+               { new: true, runValidators: true }
+             );
+         
+             return updateUser;
+           }
+         
+           throw new AuthenticationError('You need to be logged in!');
+         },
+
+          removeBook: async(parent, { userId, bookId }, context) => {
             if (context.user) {
               const updateUser = await User.findOneAndUpdate(
                 { _id: userId },
