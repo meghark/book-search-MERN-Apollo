@@ -13,7 +13,7 @@ module.exports = {// This function takes a user object as input will send the as
   // function for our authenticated routes
   authMiddleware: function ({ req }) {
     // allows token to be sent via  req.query or headers or req.body
-    console.log(req.body);
+
     let token =  req.body.token  || req.query.token || req.headers.authorization ;
 
     if(req.headers.authorization){
