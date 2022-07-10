@@ -33,3 +33,4 @@ Deployed APP: https://meghark.github.io/portfolio/
 ## Questions
 
 if you have any questions about the repository, open an issue/pr or contact me directly at megha.nambiar@gmail.com You can find more of my work at Github.
+https://thawing-refuge-40661.herokuapp.com/ | https://git.heroku.com/thawing-refuge-40661.git
