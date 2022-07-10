@@ -11,27 +11,12 @@ const resolvers = {
         // Get logged in user
         me: async (parent, args, context) => {
           if (context.user) {
-              const userData = await User.findOne({ _id: context.user._id })
-                .select('-__v -password')
-                .populate('savedBooks');
+              const userData = await User.findOne({ _id: context.user._id });
           
               return userData;
             }
           
             throw new AuthenticationError('Not logged in');
-        },
-        // Get all users.
-        // Not used currently in the application for future use.
-        users: async () => {
-            return User.find();
-        },
-        // Not used currently in the application for future use.
-
-        user: async (parent, args, context) => {
-            const userData = await User.findOne({ _id: context.user._id })
-                .select('-__v -password')
-                .populate('savedBooks');
-            return userData;
         }
     },
 

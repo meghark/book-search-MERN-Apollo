@@ -20,7 +20,7 @@ const SavedBooks = () => {
   const { loading, data} = useQuery(GET_ME);
   // Set userData with logged in users profile.
   const userData = data?.me || {};
-
+ 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
